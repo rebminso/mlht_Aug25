@@ -159,6 +159,34 @@ lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.efflux.export=sum(grepl("GO:01
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.efflux.multidrug.pump=sum(grepl("GO:0042910",GOs))), by=org], by="org")
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.membrane.protein.complex=sum(grepl("GO:0098797",GOs))), by=org], by="org")
 
+# extra GO terms                                                                                   
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.thiamine.biosynthesis.pathways=sum(grepl("GO:0009228",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.osmoregulation=sum(grepl("GO:0009992",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.filamentous.growth=sum(grepl("GO:0030447",GOs))), by=org], by="org") 
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.spore.dispersal=sum(grepl("GO:0075325",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.pigment.accumulation=sum(grepl("GO:0043476|GO:0042440",GOs))), by=org], by="org") 
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.osmoregulation=sum(grepl("GO:0009992",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.sporulation=sum(grepl("GO:0043934",GOs))), by=org], by="org") 
+# lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.anaerobic.respiration=sum(grepl("GO:0009061",GOs))), by=org], by="org")
+# lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.aerobic.respiration=sum(grepl("GO:0009060",GOs))), by=org], by="org") 
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.cellular.respiration=sum(grepl("GO:0045333",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.respiratory.gaseous.exchange=sum(grepl("GO:0007585",GOs))), by=org], by="org") 
+
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.amino.acid.biosynthetic=sum(grepl("GO:0008652",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.nucleotide.biosynthetic=sum(grepl("GO:0009165",GOs))), by=org], by="org") 
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.fatty.acid.biosynthetic=sum(grepl("GO:0006633",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.translation=sum(grepl("GO:0006412",GOs))), by=org], by="org") 
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.transport=sum(grepl("GO:0006810",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.methyl.accepting.chemotaxis.protein=sum(grepl("GO:0098561",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.mRNA.transcription=sum(grepl("GO:0009299",GOs))), by=org], by="org") 
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.reactive.oxygen.species.biosynthetic=sum(grepl("GO:1903409",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.cell.growth=sum(grepl("GO:0016049",GOs))), by=org], by="org")
+
+                                                                                         
+                                                                                         
+# extra GO terms till here!                                                                                        
+                                                                                         
+
 # biofilm/attachement
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.biofilm.matrix=sum(grepl("GO:0062039",GOs))), by=org], by="org")
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.biofilm.formation=sum(grepl("GO:0042710",GOs))), by=org], by="org")
@@ -249,7 +277,7 @@ lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.symbiotic.interactions=sum(gre
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.interactions=sum(grepl("GO:0044419",GOs))), by=org], by="org")
 
 # necromass degradation, recycling
-lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.peptidoglycan.catabolism=sum(grepl("GO:0009253|GO:0009286",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.peptidoglycan.catabolism=sum(grepl("GO:0009253",GOs))), by=org], by="org")  # GO:0009286 - No info 
 lht.dt <- merge(lht.dt, gapseq.pwy.dt[Prediction==TRUE, list(gapseq_meta.peptidoglycan.recycling=length(grep("Anhydromuropeptides-Recycling", hierarchy))), by=org], by="org")
 
 # glycans, mucus etc
