@@ -182,6 +182,10 @@ lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.mRNA.transcription=sum(grepl("
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.reactive.oxygen.species.biosynthetic=sum(grepl("GO:1903409",GOs))), by=org], by="org")
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.cell.growth=sum(grepl("GO:0016049",GOs))), by=org], by="org")
 
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.membrane.lipid.metabolic=sum(grepl("GO:1905038",GOs))), by=org], by="org") 
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.membrane.organisation=sum(grepl("GO:0061024",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.antioxidant.activity=sum(grepl("GO:0016209",GOs))), by=org], by="org")
+
                                                                                          
                                                                                          
 # extra GO terms till here!                                                                                        
