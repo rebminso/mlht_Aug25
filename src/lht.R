@@ -165,7 +165,6 @@ lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.osmoregulation=sum(grepl("GO:0
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.filamentous.growth=sum(grepl("GO:0030447",GOs))), by=org], by="org") 
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.spore.dispersal=sum(grepl("GO:0075325",GOs))), by=org], by="org")
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.pigment.accumulation=sum(grepl("GO:0043476|GO:0042440",GOs))), by=org], by="org") 
-lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.osmoregulation=sum(grepl("GO:0009992",GOs))), by=org], by="org")
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.sporulation=sum(grepl("GO:0043934",GOs))), by=org], by="org") 
 # lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.anaerobic.respiration=sum(grepl("GO:0009061",GOs))), by=org], by="org")
 # lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.aerobic.respiration=sum(grepl("GO:0009060",GOs))), by=org], by="org") 
@@ -186,6 +185,10 @@ lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.membrane.lipid.metabolic=sum(g
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.membrane.organisation=sum(grepl("GO:0061024",GOs))), by=org], by="org")
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.antioxidant.activity=sum(grepl("GO:0016209",GOs))), by=org], by="org")
 
+# EPS
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.biofilm.attachment=sum(grepl("GO:0042711",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.exopolysaccharide.biosynthesis=sum(grepl("GO:0016209",GOs))), by=org], by="org")
+                                                                                         
                                                                                          
                                                                                          
 # extra GO terms till here!                                                                                        
