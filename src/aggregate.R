@@ -34,11 +34,13 @@ cat("found:", avail.dir, "in:", input.dir, "\n")
 # Virulence factors, resistance genes (abricate)
 if("abricate" %in% avail.dir){
     files.abricate.vfdb <- list.files(paste0(input.dir, "/abricate"), pattern="*_vfdb.tbl", full.names=T)
-    abricate.vfdb.dt <- rbindlist( Map(cbind, lapply(files.abricate.vfdb, data.table::fread), org = str_remove(basename(files.abricate.vfdb), "_vfdb.tbl")) )
+    abricate.vfdb.dt <- rbindlist( Map(cbind, lapply(files.abricate.vfdb, data.table::fread), org = str_remove_all(basename(files.abricate.vfdb), "abricate_|_vfdb.tbl")) )
     files.abricate.resfinder <- list.files(paste0(input.dir, "/abricate"), pattern="*_resfinder.tbl", full.names=T)
-    abricate.resfinder.dt <- rbindlist( Map(cbind, lapply(files.abricate.resfinder, data.table::fread), org = str_remove(basename(files.abricate.resfinder), "_resfinder.tbl")) )
-    fwrite(abricate.vfdb.dt, paste0(input.dir, "/abricate_vfdb.csv.gz"))
-    fwrite(abricate.resfinder.dt, paste0(input.dir, "/abricate_resfinder.csv.gz"))
+    abricate.resfinder.dt <- rbindlist( Map(cbind, lapply(files.abricate.resfinder, data.table::fread), org = str_remove_all(basename(files.abricate.resfinder), "abricate_|_resfinder.tbl")) )
+    write.csv(abricate.vfdb.dt, gzfile(paste0(input.dir, "/abricate_vfdb.csv.gz")), row.names = FALSE)
+    write.csv(abricate.resfinder.dt, gzfile(paste0(input.dir, "/abricate_resfinder.csv.gz")), row.names = FALSE)
+
+    # write.csv(abricate.resfinder.dt, paste0(input.dir, "/abricate_resfinder.csv.gz"))
 }
 
 # Natural products (antismash)
@@ -49,14 +51,16 @@ if("antismash" %in% avail.dir){
         no.result <- any(grepl("No results found on input", readLines(f, warn=F)))
         if(no.result) next
         new.dt <- tryCatch(
-        expr = { return(data.table(htmltab(f,which="//div[@id='compact-record-table']",rm_nodata_cols=F), org=str_extract(f,"(?<=antismash/).*(?=/index.html)"))) },
-        error = function(e){ return(data.table(htmltab(f,which="//div[@class='overview-layout']", rm_nodata_cols=F), org=str_extract(f,"(?<=antismash/).*(?=/index.html)"))) },
+        expr = { return(data.table(htmltab(f,which="//div[@id='compact-record-table']",rm_nodata_cols=F), org = str_replace(basename(f), "_index.html$", ""))) },
+        error = function(e){ return(data.table(htmltab(f,which="//div[@class='overview-layout']", rm_nodata_cols=F),org = str_replace(basename(f), "_index.html$", ""))) },
             finally = { })
         colnames(new.dt) <- c("Region","Type","From","To","Most.similar.known.cluster","Most.similar.known.cluster.1","Similarity","org")
         antismash.dt <- rbind(antismash.dt, new.dt)
     }
-    fwrite(antismash.dt, paste0(input.dir, "/antismash.csv.gz"))
+    write.csv(antismash.dt, gzfile(paste0(input.dir, "/antismash.csv.gz")), row.names = FALSE)
+    # write.csv(antismash.dt, paste0(input.dir, "/antismash.csv.gz"))
 }
+
 
 # 16S genes (barrnap)
 if("barrnap" %in% avail.dir){
@@ -67,14 +71,33 @@ if("barrnap" %in% avail.dir){
 }
 
 # Carbohydrate active enzymes (dbcan)
-if("dbcan" %in% avail.dir){
-    files.dbcan <- list.files(paste0(input.dir, "/dbcan"), pattern="overview.txt", full.names=T,recursive=T)
-    dbcan.dt <- rbindlist( Map(cbind, lapply(files.dbcan, data.table::fread), org = str_extract(files.dbcan,"(?<=dbcan/).*(?=/overview.txt)")) )
-    files.dbcan.sub <- list.files(paste0(input.dir, "/dbcan"), pattern="dbsub.out", full.names=T,recursive=T)
-    dbcan.sub.dt <- rbindlist( Map(cbind, lapply(files.dbcan.sub, data.table::fread,fill=T), org = str_extract(files.dbcan.sub,"(?<=dbcan/).*(?=/dbsub.out)")) )
-    fwrite(dbcan.dt, paste0(input.dir, "/dbcan.csv.gz"))
-    fwrite(dbcan.sub.dt, paste0(input.dir, "/dbcan_sub.csv.gz"))
+if ("dbcan" %in% avail.dir) {
+    files.dbcan <- list.files(paste0(input.dir, "/dbcan"), pattern="overview.txt", full.names=TRUE, recursive=TRUE)
+    dbcan.dt <- rbindlist(
+        Map(
+            function(dt, file) {
+                dt[, org := tools::file_path_sans_ext(basename(file))] 
+            dt
+            },
+            lapply(files.dbcan, data.table::fread),
+            files.dbcan
+        )
+    )
+    files.dbcan.sub <- list.files(paste0(input.dir, "/dbcan"), pattern="dbcan-sub.hmm.out", full.names=TRUE, recursive=TRUE)
+    dbcan.sub.dt <- rbindlist(
+        Map(
+            function(dt, file) {
+                dt[, org := tools::file_path_sans_ext(basename(file))] 
+            dt
+            },
+            lapply(files.dbcan, data.table::fread),
+            files.dbcan
+        )
+    )
+    write.csv(dbcan.dt, gzfile(paste0(input.dir, "/dbcan.csv.gz")), row.names=FALSE)
+    write.csv(dbcan.sub.dt, gzfile(paste0(input.dir, "/dbcan_sub.csv.gz")), row.names=FALSE)
 }
+
 
 # cluster of orthologous groups (eggnog-mapper)
 if("eggnog" %in% avail.dir){
@@ -87,10 +110,11 @@ if("eggnog" %in% avail.dir){
 if("gutsmash" %in% avail.dir){
     files.gutsmash <- list.files(paste0(input.dir, "/gutsmash"), pattern="index.html", full.names=T,recursive=T)
     no.result.idx <- sapply(files.gutsmash, function(f) any(grepl("No results found on input", readLines(f, warn=F))))
-    gutsmash.dt <- rbindlist( Map(cbind, lapply(files.gutsmash[!no.result.idx], htmltab,which=1,rm_nodata_cols=F), org = str_extract(files.gutsmash[!no.result.idx],"(?<=gutsmash/).*(?=/index.html)")) )
-    fwrite(gutsmash.dt, paste0(input.dir, "/gutsmash.csv.gz"))
+    gutsmash.dt <- rbindlist( Map(cbind, lapply(files.gutsmash[!no.result.idx], htmltab,which=1,rm_nodata_cols=F),org = str_replace(basename(files.gutsmash[!no.result.idx]), "_index.html$", "")) )
+    write.csv(gutsmash.dt, gzfile(paste0(input.dir, "/gutsmash.csv.gz")), row.names = FALSE)
 }
 
+                            
 # Kegg (kofam)
 if("kofam" %in% avail.dir){
     files.kofam <- list.files(paste0(input.dir, "/kofam"), pattern="*.txt", full.names=T,recursive=T)
@@ -102,22 +126,27 @@ if("kofam" %in% avail.dir){
 
 # metabolic network & model (gapseq)
 if("gapseq" %in% avail.dir){
-    files.gapseq.pwy <- list.files(paste0(input.dir, "/gapseq"), pattern="*-Pathways.tbl.gz", full.names=T,recursive=T)
-    gapseq.pwy.dt <- rbindlist( Map(cbind, lapply(files.gapseq.pwy, data.table::fread), org = str_extract(basename(files.gapseq.pwy),".*(?=-all-Pathways.tbl?(.gz))")) )
+    files.gapseq.pwy <- list.files(paste0(input.dir, "/gapseq"), pattern="*-Pathways.tbl", full.names=T,recursive=T)
+    gapseq.pwy.dt <- rbindlist( Map(cbind, lapply(files.gapseq.pwy, data.table::fread), org = str_extract(basename(files.gapseq.pwy),".*(?=-all-Pathways.tbl?)")) )
     files.gapseq.med <- list.files(paste0(input.dir, "/gapseq"), pattern="*-medium.csv", full.names=T,recursive=T)
     gapseq.med.dt <- rbindlist( Map(cbind, lapply(files.gapseq.med, data.table::fread), org = str_extract(basename(files.gapseq.med),".*(?=-medium.csv)")) )
     files.gapseq.cs <- list.files(paste0(input.dir, "/gapseq"), pattern="*-cs.tbl", full.names=T,recursive=T)
     gapseq.cs.dt <- rbindlist( Map(cbind, lapply(files.gapseq.cs, data.table::fread), org = str_extract(basename(files.gapseq.cs),".*(?=-cs.tbl)")) )
     files.gapseq.ferm <- list.files(paste0(input.dir, "/gapseq"), pattern="*-ferm.tbl", full.names=T,recursive=T)
     gapseq.ferm.dt <- rbindlist( Map(cbind, lapply(files.gapseq.ferm, data.table::fread), org = str_extract(basename(files.gapseq.ferm),".*(?=-ferm.tbl)")) )
-    files.gapseq.mod <- list.files(paste0(input.dir, "/gapseq"), pattern="*.RDS", full.names=T,recursive=T)
-    gapseq.mod.lst <- lapply(files.gapseq.mod, readRDS); names(gapseq.mod.lst) <- sapply(gapseq.mod.lst, mod_id)
-    fwrite(gapseq.pwy.dt, paste0(input.dir, "/gapseq_pwy.csv.gz"))
-    fwrite(gapseq.med.dt, paste0(input.dir, "/gapseq_med.csv.gz"))
-    fwrite(gapseq.cs.dt, paste0(input.dir, "/gapseq_cs.csv.gz"))
-    fwrite(gapseq.ferm.dt, paste0(input.dir, "/gapseq_ferm.csv.gz"))
-    saveRDS(gapseq.mod.lst, paste0(input.dir, "/gapseq_models.RDS"), compress="xz")
+    # Models
+    files.gapseq.mod <- list.files(paste0(input.dir, "/gapseq"), pattern = "*.RDS", full.names = TRUE, recursive = TRUE)
+    gapseq.mod.lst <- lapply(files.gapseq.mod, readRDS)
+    names(gapseq.mod.lst) <- sapply(gapseq.mod.lst, function(x) {
+        if ("mod_id" %in% slotNames(x)) x@mod_id else basename(files.gapseq.mod)[[1]]
+    })
+    write.csv(gapseq.pwy.dt, gzfile(paste0(input.dir, "/gapseq_pwy.csv.gz")), row.names = FALSE)
+    write.csv(gapseq.med.dt, gzfile(paste0(input.dir, "/gapseq_med.csv.gz")), row.names = FALSE)
+    write.csv(gapseq.cs.dt, gzfile(paste0(input.dir, "/gapseq_cs.csv.gz")), row.names = FALSE)
+    write.csv(gapseq.ferm.dt, gzfile(paste0(input.dir, "/gapseq_ferm.csv.gz")), row.names = FALSE)
+    saveRDS(gapseq.mod.lst, paste0(input.dir, "/gapseq_models.RDS"), compress = "xz")
 }
+
 
 if("bakta" %in% avail.dir){
     files.bakta <- list.files(paste0(input.dir, "/bakta"), pattern="*.txt", full.names=T,recursive=T)
