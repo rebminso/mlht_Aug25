@@ -189,7 +189,14 @@ lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.antioxidant.activity=sum(grepl
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.biofilm.attachment=sum(grepl("GO:0042711",GOs))), by=org], by="org")
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.exopolysaccharide.biosynthesis=sum(grepl("GO:0016209",GOs))), by=org], by="org")
                                                                                          
-                                                                                         
+# Stress - yas
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.response.to.desiccation=sum(grepl("GO:0009269",GOs))), by=org], by="org")
+# lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.response.to.osmotic.stress=sum(grepl("GO:0006970",GOs))), by=org], by="org")  
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.trehalose.biosynthesis=sum(grepl("GO:0005992",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.glycine.betaine.biosynthesis=sum(grepl("GO:0031460",GOs))), by=org], by="org")  
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.double.strand.break.repair=sum(grepl("GO:0006302",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.protein.refolding=sum(grepl("GO:0042026",GOs))), by=org], by="org")  
+
                                                                                          
 # extra GO terms till here!                                                                                        
                                                                                          
