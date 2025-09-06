@@ -160,7 +160,7 @@ lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.efflux.multidrug.pump=sum(grep
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.membrane.protein.complex=sum(grepl("GO:0098797",GOs))), by=org], by="org")
 
 # extra GO terms                                                                                   
-lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.thiamine.biosynthesis.pathways=sum(grepl("GO:0009228",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.thiamine.biosynthesis.pathways=sum(grepl("GO:0009228",GOs))), by=org], by="org")   # dec in stress
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.osmoregulation=sum(grepl("GO:0009992",GOs))), by=org], by="org")
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.filamentous.growth=sum(grepl("GO:0030447",GOs))), by=org], by="org") 
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.spore.dispersal=sum(grepl("GO:0075325",GOs))), by=org], by="org")
@@ -178,8 +178,8 @@ lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.translation=sum(grepl("GO:0006
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.transport=sum(grepl("GO:0006810",GOs))), by=org], by="org")
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.methyl.accepting.chemotaxis.protein=sum(grepl("GO:0098561",GOs))), by=org], by="org")
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.mRNA.transcription=sum(grepl("GO:0009299",GOs))), by=org], by="org") 
-lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.reactive.oxygen.species.biosynthetic=sum(grepl("GO:1903409",GOs))), by=org], by="org")
-lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.cell.growth=sum(grepl("GO:0016049",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.reactive.oxygen.species.biosynthetic=sum(grepl("GO:1903409",GOs))), by=org], by="org")  # stress
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.cell.growth=sum(grepl("GO:0016049",GOs))), by=org], by="org")   # cell size # competative 
 
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.membrane.lipid.metabolic=sum(grepl("GO:1905038",GOs))), by=org], by="org") 
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.membrane.organisation=sum(grepl("GO:0061024",GOs))), by=org], by="org")
@@ -196,7 +196,15 @@ lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.trehalose.biosynthesis=sum(gre
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.glycine.betaine.biosynthesis=sum(grepl("GO:0031460",GOs))), by=org], by="org")  
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.double.strand.break.repair=sum(grepl("GO:0006302",GOs))), by=org], by="org")
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.protein.refolding=sum(grepl("GO:0042026",GOs))), by=org], by="org")  
-
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.mismatch.repair=sum(grepl("GO:0006298",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.clavulanic.acid.biosynthesis=sum(grepl("GO:0033050",GOs))), by=org], by="org")  # enriched competative 
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.oxidative.phosphorylation=sum(grepl("GO:0006119",GOs))), by=org], by="org")  # ruderals dec
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.polyketide.metabolic=sum(grepl("GO:0030638",GOs))), by=org], by="org")  # competative dec
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.lipoprotein.transport=sum(grepl("GO:0042953",GOs))), by=org], by="org")  # competative enchanced 
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.biotin.metabolism=sum(grepl("GO:0006768",GOs))), by=org], by="org") # foraging 
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.clavulanic.acid.biosynthesis=sum(grepl("GO:0033050",GOs))), by=org], by="org")  # enriched competative 
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.oxidative.phosphorylation=sum(grepl("GO:0006119",GOs))), by=org], by="org")  # ruderals dec
+                                                                                         
                                                                                          
 # extra GO terms till here!                                                                                        
                                                                                          
