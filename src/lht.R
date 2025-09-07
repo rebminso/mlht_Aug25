@@ -204,7 +204,19 @@ lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.lipoprotein.transport=sum(grep
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.biotin.metabolism=sum(grepl("GO:0006768",GOs))), by=org], by="org") # foraging 
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.clavulanic.acid.biosynthesis=sum(grepl("GO:0033050",GOs))), by=org], by="org")  # enriched competative 
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.oxidative.phosphorylation=sum(grepl("GO:0006119",GOs))), by=org], by="org")  # ruderals dec
+
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.external.polysachharide.biosynthesis=sum(grepl("GO:0045226",GOs))), by=org], by="org")
                                                                                          
+# responsiveness
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.response.to.stimuli=sum(grepl("GO:0050896",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.cellular.response.to.chemical.stimuli=sum(grepl("GO:0070887",GOs))), by=org], by="org") 
+
+# Extracellular enzymes (CSO stress)
+# lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.proteolysis=sum(grepl("GO:0006508",GOs))), by=org], by="org") 
+# low atp yielding metabolism
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.anaerobic.electron.transport=sum(grepl("GO:0019645",GOs))), by=org], by="org")  
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.oxidative.phosphorylation=sum(grepl("GO:0006119",GOs))), by=org], by="org")                                                                                          
+                                                                                            
                                                                                          
 # extra GO terms till here!                                                                                        
                                                                                          
