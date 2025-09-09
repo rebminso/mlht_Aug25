@@ -188,6 +188,14 @@ lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.antioxidant.activity=sum(grepl
 # EPS
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.biofilm.attachment=sum(grepl("GO:0042711",GOs))), by=org], by="org")
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.exopolysaccharide.biosynthesis=sum(grepl("GO:0016209",GOs))), by=org], by="org")
+
+# Dna repair
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.dna.repair=sum(grepl("GO:0006281",GOs))), by=org], by="org")                                                                                         
+
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.membrane.organisation=sum(grepl("GO:0061024",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.membrane.lipid.metabolic.regulation=sum(grepl("GO:1905038",GOs))), by=org], by="org")
+lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.carbepenim.biosynthesis=sum(grepl("GO:1901769",GOs))), by=org], by="org")
+
                                                                                          
 # Stress - yas
 lht.dt <- merge(lht.dt, eggnog.dt[,list(eggnog_go.response.to.desiccation=sum(grepl("GO:0009269",GOs))), by=org], by="org")
